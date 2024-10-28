@@ -9,6 +9,9 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from app.api.router import router
 from app.api.handler.user import user_router
 
+
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # startup code goes here:
