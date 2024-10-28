@@ -4,14 +4,16 @@ from beanie import init_beanie
 from contextlib import asynccontextmanager
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+from app.models.user_model import User
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     db_client = MongoClient(settings.MONGO_DB, server_api=ServerApi('1'))
-    await init_beanie(
+    init_beanie(
         database= db_client.BlogClient,
         document_models= [
-
+            User    
         ]
     )
     yield
