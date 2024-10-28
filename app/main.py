@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.config.config import settings
+from app.core.config import settings
 from beanie import init_beanie
 from contextlib import asynccontextmanager
 from pymongo.mongo_client import MongoClient
@@ -7,6 +7,8 @@ from pymongo.server_api import ServerApi
 from app.models.user_model import User
 from motor.motor_asyncio import AsyncIOMotorClient
 from app.api.router import router
+from app.api.handler.user import user_router
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # startup code goes here:
@@ -25,4 +27,4 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-app.include_router(router, prefix= settings.API_STR)
+app.include_router(user_router, prefix= f'/{settings.API_STR}')

@@ -3,3 +3,6 @@ uvicorn[standard]
 pydantic
 beanie
 email-validator
+python-jose[crytography]
+passlib[bcrypt]
+pymongo
