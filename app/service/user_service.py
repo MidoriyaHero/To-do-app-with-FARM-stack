@@ -7,7 +7,7 @@ class UserService:
     @staticmethod 
     async def create_user(user: UserAuth):
         user_in = User(
-            username = user.username,
+            user_name = user.username,
             email = user.email,
             hash_password = get_password(user.password)
         )
