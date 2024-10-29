@@ -7,7 +7,6 @@ from pymongo.server_api import ServerApi
 from app.models.user_model import User
 from motor.motor_asyncio import AsyncIOMotorClient
 from app.api.router import router
-from app.api.handler.user import user_router
 
 
 
@@ -30,4 +29,4 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-app.include_router(user_router, prefix= f'/{settings.API_STR}')
+app.include_router(router, prefix= f'/{settings.API_STR}')
