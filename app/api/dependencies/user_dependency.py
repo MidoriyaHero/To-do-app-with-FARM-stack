@@ -7,7 +7,7 @@ from app.schemas.auth_schema import TokenPayLoad
 from datetime import datetime
 from pydantic import ValidationError
 from app.service.user_service import UserService
-
+from json import loads
 
 reusable_auth = OAuth2PasswordBearer(
     tokenUrl= f"{settings.API_STR}/auth/login",
@@ -16,21 +16,24 @@ reusable_auth = OAuth2PasswordBearer(
 
 async def get_current_user(token: str = Depends(reusable_auth)) -> User:
     try:
-        payload = jwt.decode(
-            token,
-            settings.JWT_KEY,
-            algorithms= [settings.ALGORITHM]
-        )
+       
+        payload = jwt.decode(token, settings.JWT_KEY, algorithms=settings.ALGORITHM)
+        print(type(payload['subject']), type(payload['expires']))
         token_data = TokenPayLoad(**payload)
-        if datetime.fromtimestamp(token_data.exp) < datetime.now():
+        print(token_data)
+        
+        if datetime.fromisoformat(loads(token_data.expires)) < datetime.now():
             raise HTTPException(
                 status_code=401, 
-                detail= "Token expired!!!")
+                detail= "Token expired!!!",
+                headers={"WWW-Authenticate": "Bearer"})
+    
     except(jwt.JWTError, ValidationError):
         raise HTTPException(status_code=403,
-                            detail= "Could not validate credentials!!!")
+                            detail= "Could not validate credentials!!!",
+                            headers={"WWW-Authenticate": "Bearer"})
     
-    user = await UserService.get_user_by_id(UserId= token_data.sub)
+    user = await UserService.get_user_by_id(UserId= token_data.subject)
 
     if not user:
         raise HTTPException(status_code=404, 

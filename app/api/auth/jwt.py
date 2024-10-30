@@ -14,13 +14,15 @@ auth_router = APIRouter()
 @auth_router.post('/login', summary= "Create access and refresh token", response_model=TokenSchema)
 async def login(data: OAuth2PasswordRequestForm = Depends()) -> Any:
     user = await UserService.authenticate(email= data.username, password= data.password)
+    
     if not user:
         raise HTTPException(status_code= 400, detail= "something went wrong!")
+    
     return {
         'access_token': create_access_token(user.user_id),
         'refresh_token': create_refresh_token(user.user_id)
     }
 
-@auth_router.get("/test_login", summary= "Test login", response_model=UserOut)
+@auth_router.post("/test-login", summary= "Test login", response_model=UserOut)
 async def testlogin(user_data: User = Depends(get_current_user)) -> Any:
     return user_data

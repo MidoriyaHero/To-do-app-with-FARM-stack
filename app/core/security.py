@@ -19,8 +19,8 @@ def create_access_token(subject: Union[str, Any], expires: int=None) -> str:
     if expires is not None:
         expires = dumps(datetime.now() + expires, default=json_serial) 
     else:
-        expires = dumps(datetime.now() + timedelta(minutes= settings.ACCESS_TOKEN_EXPIRE_MINUTES),default=json_serial )
-    to_encode = {'expires': expires, 'subject': str(subject)}
+        expires = dumps((datetime.now() + timedelta(minutes= settings.ACCESS_TOKEN_EXPIRE_MINUTES)),default=json_serial )
+    to_encode = {'subject': str(subject),'expires': expires}
 
     encode_jwt = jwt.encode(to_encode, settings.JWT_KEY, settings.ALGORITHM)
     return encode_jwt
@@ -29,8 +29,8 @@ def create_refresh_token(subject: Union[str, Any], expires: int=None) -> str:
     if expires is not None:
         expires = dumps(datetime.now() + expires, default=json_serial) 
     else:
-        expires = dumps(datetime.now() + timedelta(minutes= settings.REFRESH_TOKEN_EXPIRE_MINUTES), default=json_serial)
-    to_encode = {'expires': expires, 'subject': str(subject)}
+        expires = dumps((datetime.now() + timedelta(minutes= settings.REFRESH_TOKEN_EXPIRE_MINUTES)), default=json_serial)
+    to_encode = {'subject': str(subject),'expires': expires}
     encode_jwt = jwt.encode(to_encode, settings.JWT_REFRESH_KEY, settings.ALGORITHM)
     return encode_jwt
 
