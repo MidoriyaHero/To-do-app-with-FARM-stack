@@ -18,9 +18,7 @@ async def get_current_user(token: str = Depends(reusable_auth)) -> User:
     try:
        
         payload = jwt.decode(token, settings.JWT_KEY, algorithms=settings.ALGORITHM)
-        print(type(payload['subject']), type(payload['expires']))
         token_data = TokenPayLoad(**payload)
-        print(token_data)
         
         if datetime.fromisoformat(loads(token_data.expires)) < datetime.now():
             raise HTTPException(
