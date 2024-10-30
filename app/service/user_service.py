@@ -20,6 +20,11 @@ class UserService:
         return user
     
     @staticmethod
+    async def get_user_by_id(UserId: str):
+        user = await User.find_one(User.user_id == UserId)
+        return user
+    
+    @staticmethod
     async def authenticate(email: str, password: str):
         user = await UserService.get_user_by_email(email)
         if not user:
@@ -27,3 +32,4 @@ class UserService:
         if not verify_password(password, user.hash_password):
             raise HTTPException(status_code= 400, detail= "Incorrect password")
         return user
+    
