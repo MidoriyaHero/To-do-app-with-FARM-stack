@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from app.models.user_model import User
+from app.models.todo_model import Todo
 from motor.motor_asyncio import AsyncIOMotorClient
 from app.api.router import router
 
@@ -18,7 +19,7 @@ async def lifespan(app: FastAPI):
         settings.MONGO_DB,
     )
     await init_beanie(client.BlogClient, 
-                      document_models=[User])
+                      document_models=[User, Todo])
     yield
     # shutdown code goes here:
     client.close()
