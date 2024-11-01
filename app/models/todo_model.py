@@ -10,9 +10,10 @@ class Todo(Document):
     todo_id: UUID = Field(default_factory = uuid4, unique = True)
     status: bool = False
     title: Indexed(str)
+    description: str = None
     create_at: datetime = Field(default_factory = datetime.now)
     update_at: datetime = Field(default_factory = datetime.now)
-    owner: Link(User) 
+    owner: Link[User]
 
     def __repr__(self) -> str:
         return f'<User {self.title}>'
@@ -32,4 +33,4 @@ class Todo(Document):
         self.update_at = datetime.now()
 
     class Settings:
-        name = 'Todo'
+        name = 'To-do'
