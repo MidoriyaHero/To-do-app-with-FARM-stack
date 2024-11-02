@@ -18,4 +18,4 @@ async def create(data : UserAuth):
 
 @user_router.get('/me', response_model = UserOut)
 async def get_user(current_user: User = Depends(get_current_user)):
-    return await current_user
+    return current_user
