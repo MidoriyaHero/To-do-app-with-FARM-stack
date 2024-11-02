@@ -1,7 +1,10 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from app.schemas.user_schema import UserAuth, UserOut
 from app.service.user_service import UserService
 import pymongo
+from app.api.dependencies.user_dependency import get_current_user
+from app.models.user_model import User
+
 
 user_router = APIRouter()
 @user_router.post('/create-users', response_model=UserOut)
@@ -12,3 +15,7 @@ async def create(data : UserAuth):
         raise HTTPException(  
             status_code= 400, 
             detail ="UserName or Email is already exists!")
+
+@user_router.get('/me', response_model = UserOut)
+async def get_user(current_user: User = Depends(get_current_user)):
+    return await current_user
