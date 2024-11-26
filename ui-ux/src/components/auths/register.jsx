@@ -31,7 +31,7 @@ export const Register = () => {
           p={12}
           rounded={6}
         >
-          <Heading mb={6}>Register</Heading>
+          <Heading textColor='orange' mb={6}>Register</Heading>
           <form onSubmit={handleSubmit(onSubmit)}>
             <FormControl isInvalid={errors.email}>
               <Input
@@ -99,25 +99,19 @@ export const Register = () => {
               isLoading={isSubmitting}
               loadingText="Creating account..."
               width="100%"
-              colorScheme="green"
-              variant="outline"
-              mt={6}
-              mb={6}
-              type="submit"
+              colorScheme='orange' textColor='orange' variant='outline' mt={3} mb={2}
             >
               Register
             </Button>
           </form>
-          <ThemeToggle showLabel={true} />
           <Button
             onClick={() => navigate("/login", { replace: true })}
             width="100%"
-            colorScheme="gray"
-            variant="outline"
-            mt={6}
+            colorScheme='orange' textColor='orange.300' variant='link' mt={3} mb={2}
           >
             Login Instead
           </Button>
+          <ThemeToggle showLable={true}/>
         </Flex>
       </Flex>
     );
