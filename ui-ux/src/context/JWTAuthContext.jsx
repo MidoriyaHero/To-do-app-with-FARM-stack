@@ -1,5 +1,6 @@
-import {createContext} from 'react'
-import {userReducer} from 'react'
+import {createContext, useEffect, useReducer, useRef} from 'react'
+import {setSession} from '../utils/session'
+import {axiosInstance} from '../services/axios'
 import {validateToken} from  '../utils/jwt'
 const initialState = {
     isAuthenticated: false,
@@ -45,17 +46,69 @@ const handlers = {
 const reducer = (state, action) =>  
     handlers[action.type] ? handlers[action.type](state, action) : state
 
-const AuthProvider = (props) => {
+export const AuthProvider = (props) => {
     const {children} = props;
-    const [state, dispatch] = userReducer(reducer, initialState)
-    const initialize = async () => {
-        try {
-            const accessToken = localStorage.getItem('accessToken')
-            if (accessToken && validateToken(accessToken)) {
-                
+    const [state, dispatch] = useReducer(reducer, initialState)
+    const isMounted = useRef(false)
+    useEffect(() => {
+        if (isMounted.current) return;
+        const initialize = async () => {
+            try {
+                const accessToken = localStorage.getItem('accessToken')
+                if (accessToken && validateToken(accessToken)) {
+                    setSession(accessToken)
+    
+                    const response = await axiosInstance.get("/user/me")
+                    const {data: user} = response;
+                    dispatch({
+                        type: 'INITIALIZE',
+                        payload:{
+                            isAuthenticated: true,
+                            user,
+                        },
+                    });
+                } else {
+                    dispatch({
+                        type: 'INITIALIZE',
+                        payload:{
+                            isAuthenticated: false,
+                            user: null,
+                        },
+                    });
+                }
+            } catch (error) {
+                console.error(error);
+                dispatch({
+                    type: 'INITIALIZE',
+                    payload:{
+                        isAuthenticated: false,
+                        user: null,
+                    },
+                });
             }
-        } catch (err) {
+        }
+        initialize();
+        isMounted.current= true;
+    }, []);
+
+    const getTokens = async (email, password) => {
+        const formData = new FormData();
+        formData.append('username',email); 
+        formData.append('password',password);
+
+        try{
+            const response = await axiosInstance.post("/auth/login", formData);
+            setSession(response.data.access_token, response.data.refresh_token)
+        } catch (error) {
+            throw(error);
+        }
+    };
+
+    const login = async (email, password) => {
+        try {
+
+        } catch(error) {
 
         }
-    }
-}
+    };
+};
