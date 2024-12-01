@@ -1,5 +1,4 @@
-import jwtDecode from 'jwt-decode';
-
+import { jwtDecode } from "jwt-decode";
 export const validateToken = (token) => {
     const now = Math.round(new Date().getTime() / 1000);
     const decodedToken = jwtDecode(token);

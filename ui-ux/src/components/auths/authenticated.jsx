@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {useAuth} from '../../hooks/useAuth'
 import { useLocation, useNavigate } from 'react-router-dom';
 
-export const authenticated = (props) => {
+export const Authenticated = (props) => {
     const {children} = props;
     const auth = useAuth();
     const navigate = useNavigate();

@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import {useAuth} from '../../hooks/useAuth'
+import { useLocation, useNavigate } from 'react-router-dom';
 
-export const publicRoute = (props) => {
+export const PublicRoute = (props) => {
     const {children} = props;
     const auth = useAuth();
     const navigate = useNavigate();
@@ -8,8 +10,8 @@ export const publicRoute = (props) => {
     const [isVerified, setIsVerified] = useState(false);
     
     useEffect(() => {
-        if (!auth.isAuthenticated) {
-            navigate('/login', {replace: true, state:{from: location}});
+        if (auth.isAuthenticated) {
+            navigate('/', {replace: true, state:{from: location}});
         } else {
             setIsVerified(true);
         }
