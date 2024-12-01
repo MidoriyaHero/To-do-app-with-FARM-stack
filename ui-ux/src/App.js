@@ -19,7 +19,7 @@ function App() {
         ): (
           <Routes>
           <Route path='/login' element ={<PublicRoute> <Login /> </PublicRoute>} />
-          <Route path='/register' element ={<publicRoute> <Register /> </publicRoute>} />
+          <Route path='/register' element ={<PublicRoute> <Register /> </PublicRoute>} />
           <Route path='/' element ={<Authenticated> <h1>HOME PAGE</h1> </Authenticated>} />
           <Route path='*' element ={<Navigate to ='/' />} />
         </Routes>

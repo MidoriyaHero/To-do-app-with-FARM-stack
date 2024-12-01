@@ -54,11 +54,11 @@ export const AuthProvider = (props) => {
         if (isMounted.current) return;
         const initialize = async () => {
             try {
-                const accessToken = localStorage.getItem('accessToken')
+                const accessToken = localStorage.getItem('accessToken');
                 if (accessToken && validateToken(accessToken)) {
-                    setSession(accessToken)
+                    setSession(accessToken);
     
-                    const response = await axiosInstance.get("/user/me")
+                    const response = await axiosInstance.get("/users/me")
                     const {data: user} = response;
                     dispatch({
                         type: 'INITIALIZE',
@@ -107,7 +107,7 @@ export const AuthProvider = (props) => {
     const login = async (email, password) => {
         try {
             await getTokens(email, password);
-            const response = await axiosInstance.get('user/me');
+            const response = await axiosInstance.get('users/me');
             const {data: user} = response;
             dispatch({
                 type: 'LOGIN',
@@ -123,7 +123,6 @@ export const AuthProvider = (props) => {
         resetSession();
         dispatch({
             type: 'LOGOUT',
-
         })
     }
     return (

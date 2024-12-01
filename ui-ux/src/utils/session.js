@@ -3,7 +3,7 @@ import axiosInstance from '../services/axios';
 export const setSession = (accessToken, refreshToken = null) => {
     if (accessToken) {
         localStorage.setItem('accessToken', accessToken);
-        axiosInstance.defaults.headers.common['Authorization'] = 'Bearer ' + {accessToken};
+        axiosInstance.defaults.headers.common['Authorization']= `Bearer ${accessToken}`;
     } 
     else {
         localStorage.removeItem('accessToken');
