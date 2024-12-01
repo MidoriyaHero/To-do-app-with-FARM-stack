@@ -1,5 +1,5 @@
 import {createContext, useEffect, useReducer, useRef} from 'react'
-import {setSession} from '../utils/session'
+import {setSession, resetSession} from '../utils/session'
 import {axiosInstance} from '../services/axios'
 import {validateToken} from  '../utils/jwt'
 const initialState = {
@@ -106,9 +106,34 @@ export const AuthProvider = (props) => {
 
     const login = async (email, password) => {
         try {
-
+            await getTokens(email, password);
+            const response = await axiosInstance.get('user/me');
+            const {data: user} = response;
+            dispatch({
+                type: 'LOGIN',
+                payload:{
+                    user,
+                },
+            });
         } catch(error) {
-
+            return Promise.reject(error);
         }
     };
+    const logout = () => {
+        resetSession();
+        dispatch({
+            type: 'LOGOUT',
+
+        })
+    }
+    return (
+        <AuthContext.Provider value = {{
+            ...state,
+            login,
+            logout}}>
+            {children}
+        </AuthContext.Provider> 
+    )
 };
+
+export const AuthConsumer = AuthContext.Consumer;
