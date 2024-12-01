@@ -2,6 +2,7 @@ import {
     Button,
     Flex, 
     Heading,
+    useToast,
     Input} from '@chakra-ui/react';
 import {
     FormControl, 
@@ -10,6 +11,7 @@ import {
 import {useForm} from 'react-hook-form'
 import { useNavigate } from "react-router";
 import {ThemeToggle} from '../theme/ThemeToggle'
+import axiosInstance from '../../services/axios';
 
 export const Register = () => {
     const {
@@ -18,9 +20,25 @@ export const Register = () => {
       formState: { errors, isSubmitting },
     } = useForm();
     const navigate = useNavigate();
-    
-    const onSubmit = (values) => {
-        console.log(values)
+    const toast = useToast();
+    const onSubmit = async (values) => {
+        try {
+          await axiosInstance.post('/users/create', values);
+          toast(
+            {title: "Created Successfully!!!",
+            status: "success",
+            isClosable: true,
+            duration: 3000,
+          });
+          navigate('/login', {replace: true});
+        } catch (err) {
+          toast({
+            title: `${err.response.data.detail}`,
+            status: 'error',
+            isClosable:true,
+            duration: 1500
+          })
+        }
     }
     return (
       <Flex height="100vh" alignItems="center" justifyContent="center">

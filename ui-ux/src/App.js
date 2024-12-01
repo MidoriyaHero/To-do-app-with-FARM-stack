@@ -1,11 +1,14 @@
-import {BrowserRouter as Router, Route, Routes, Navigate} from "react-router-dom";
-import {Login} from "./components/auths/login";
-import {Register} from "./components/auths/register";
-import {AuthProvider, AuthConsumer} from './context/JWTAuthContext'
+import { BrowserRouter as Router, Route, Routes, Navigate} from "react-router-dom";
+import { Login} from "./components/auths/login";
+import { Register} from "./components/auths/register";
+import { AuthProvider, AuthConsumer} from './context/JWTAuthContext'
 import { Spinner } from "@chakra-ui/react";
-import {PublicRoute} from './components/auths/PublicRoute';
-import {Authenticated} from './components/auths/Authenticated';
-import {Flex } from '@chakra-ui/react';
+import { PublicRoute} from './components/auths/PublicRoute';
+import { Authenticated} from './components/auths/Authenticated';
+import { Flex } from '@chakra-ui/react';
+import { TodoList } from "./components/Todo/TodoList";
+import { NavBar } from "./components/NavBar/NavBar";
+
 function App() {
   return (
     <>
@@ -18,10 +21,12 @@ function App() {
           </Flex>
         ): (
           <Routes>
-          <Route path='/login' element ={<PublicRoute> <Login /> </PublicRoute>} />
-          <Route path='/register' element ={<PublicRoute> <Register /> </PublicRoute>} />
-          <Route path='/' element ={<Authenticated> <h1>HOME PAGE</h1> </Authenticated>} />
-          <Route path='*' element ={<Navigate to ='/' />} />
+            <Route path='/login' element ={<PublicRoute> <Login /> </PublicRoute>} />
+            <Route path='/register' element ={<PublicRoute> <Register /> </PublicRoute>} />
+            <Route path='/' element={<NavBar/>} >
+              <Route path='/' element ={<Authenticated> <TodoList/> </Authenticated>} />
+            </Route>
+            <Route path='*' element ={<Navigate to ='/' />} />
         </Routes>
         )}
       </AuthConsumer>
