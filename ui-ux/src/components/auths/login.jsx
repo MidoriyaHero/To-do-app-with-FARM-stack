@@ -2,7 +2,8 @@ import {
     Button,
     Flex, 
     Heading,
-    Input} from '@chakra-ui/react';
+    Input,
+    useToast } from '@chakra-ui/react';
 import {
     FormControl, 
     FormErrorMessage,
@@ -10,6 +11,7 @@ import {
 import {useForm} from 'react-hook-form'
 import { useNavigate } from "react-router";
 import {ThemeToggle} from '../theme/ThemeToggle'
+import { useAuth } from '../../hooks/useAuth';
 
 export const Login = () => {
     const {
@@ -19,9 +21,19 @@ export const Login = () => {
     }  = useForm();
 
     const navigate = useNavigate();
-
-    const onSubmit = (values) => {
-        console.log(values)
+    const {login} = useAuth();
+    const toast = useToast();
+    const onSubmit = async (values) => {
+        try {
+            await login(values.email, values.password )
+        } catch (err) {
+            toast({
+                title: 'Invalid Email or Password',
+                status: 'error',
+                isClosable: true,
+                duration: 1500,
+            })
+        }
     }
     return <Flex height='100vh' align ='center' justifyContent='center'>
         <Flex 

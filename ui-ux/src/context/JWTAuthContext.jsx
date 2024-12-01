@@ -1,6 +1,6 @@
 import {createContext, useEffect, useReducer, useRef} from 'react'
 import {setSession, resetSession} from '../utils/session'
-import {axiosInstance} from '../services/axios'
+import axiosInstance from '../services/axios'
 import {validateToken} from  '../utils/jwt'
 const initialState = {
     isAuthenticated: false,
