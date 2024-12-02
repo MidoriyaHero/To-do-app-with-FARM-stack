@@ -19,6 +19,7 @@ async def create(data: TodoCreate, current_user: User = Depends(get_current_user
 
 @todo_router.get('/{todo_id}', response_model=TodoOut)
 async def get_todo_by_id(todo_id: UUID, current_user: User = Depends(get_current_user)):
+    print(await TodoService.retrieve(current_user, todo_id))
     return await TodoService.retrieve(current_user, todo_id)
 
 @todo_router.put('/{todo_id}', response_model = TodoOut)

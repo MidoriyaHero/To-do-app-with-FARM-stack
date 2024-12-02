@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     JWT_KEY: str = os.getenv('JWT_KEY')
     JWT_REFRESH_KEY: str = os.getenv('JWT_REFRESH_KEY')
     ALGORITHM: str = 'HS256'
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60*24*7
     REFRESH_TOKEN_EXPIRE_MINUTES: int = 60*24*7 # 7days
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = ['http://localhost:3000']
     PROJECT_NAME: str = 'TO DO APP'

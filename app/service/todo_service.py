@@ -19,6 +19,7 @@ class TodoService:
     @staticmethod
     async def retrieve( user: User, todi_id: UUID):
         todo = Todo.find_one(Todo.todo_id == todi_id, Todo.owner.id == user.id)
+        print(todo)
         return todo
     
     @staticmethod
@@ -34,3 +35,4 @@ class TodoService:
         if todo:
             await todo.delete()
         return None
+        

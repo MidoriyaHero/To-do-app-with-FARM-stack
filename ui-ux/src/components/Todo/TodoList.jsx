@@ -2,6 +2,7 @@ import { Box, Center, Container, Spinner } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import axiosInstance from '../../services/axios';
 import { TodoCard } from './TodoCard';
+import { CRUDTodo } from './CRUDTodo';
 
 export const TodoList = () => {
     const [todos, setTodos] = useState([]);
@@ -26,9 +27,10 @@ export const TodoList = () => {
     }
     return (
     <Container mt={9}  >
+        <CRUDTodo  />
         {loading ? (
             <Center mt={6} >
-                <Spinner thickness='4px' speed='0.5s' emptyColor='green.200' color="green.500" />
+                <Spinner thickness='4px' speed='0.5s' emptyColor='green.100' color="green.100" />
             </Center>
         ):(
             <Box mt={6}>

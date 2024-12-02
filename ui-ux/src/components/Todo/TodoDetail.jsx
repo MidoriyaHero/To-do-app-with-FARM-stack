@@ -21,14 +21,14 @@ export const TodoDetail = () => {
         setLoading(true)
         axiosInstance.get(`/todo/${todoId}`)
         .then((response) =>{
-            setTodo(res.data)
+            setTodo(response.data)
         })
         .catch((error) => console.log(error))
         .finally(() => {
-            setLoading(faslse)
+            setLoading(false)
         })
     }
-    if (isLoading) {
+    if (loading) {
         return (
             <Container>
                 <Center mt={6} >
@@ -39,23 +39,37 @@ export const TodoDetail = () => {
     }
     return (
         <>
-        <Container>
-            <Button colorScheme="orange" onClick={() => navigate('/', {replace: true}) } >
-                Back
-            </Button>
-        </Container>
-        <Container bg='orange.300' minHeight='7rem' my={3} p={3} rounded='lg' alignItems='center' justifyContent='space-between'>
-            <Text fontSize={22} >
-                {todo.title}
-            </Text>
-            <Text bg='orange.200' mt={2} p={2} rounded='lg' >
-                {todo.desciption}
-            </Text>
-            <CRUDTodo 
-            my={3} 
-            editable={true} 
-            defaultValues={{title:todo.title, description: todo.description, status: todo.status}}
-            onSuccess={fetchTodo} />
+      <Container mt={6}>
+        <Button
+          colorScheme="yellow"
+          onClick={() => navigate("/", { replace: true })}
+        >
+          Back
+        </Button>
+      </Container>
+      <Container
+        bg='orange'
+        minHeight="7rem"
+        my={3}
+        p={3}
+        rounded="lg"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <Text fontSize={22}>{todo.title}</Text>
+        <Text bg="gray.500" mt={2} p={2} rounded="lg">
+          {todo.description}
+        </Text>
+        <CRUDTodo
+          my={3}
+          editable={true}
+          defaultValues={{
+            title: todo.title,
+            description: todo.description,
+            status: todo.status,
+          }}
+          onSuccess={fetchTodo}
+        />
         </Container>
         </>
     )

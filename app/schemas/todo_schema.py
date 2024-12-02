@@ -2,18 +2,23 @@ from pydantic import BaseModel, Field
 from typing import Optional
 from uuid import UUID
 from datetime import datetime
+from pydantic import ConfigDict
 
-class TodoCreate(BaseModel):
+class OurBaseModel(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+
+class TodoCreate(OurBaseModel):
     title: str = Field(..., title = "Title")
     description: str = Field(..., title= "Description")
     status: Optional[bool] = False
 
-class TodoUpdate(BaseModel):
+class TodoUpdate(OurBaseModel):
     title: Optional[str] = Field(..., title = "Title")
     description: Optional[str] = Field(..., title= "Description")
     status: Optional[bool] = False
 
-class TodoOut(BaseModel):
+class TodoOut(OurBaseModel):
     todo_id: UUID
     status: bool
     title: str

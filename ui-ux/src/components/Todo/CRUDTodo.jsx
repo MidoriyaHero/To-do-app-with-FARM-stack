@@ -1,7 +1,7 @@
 import { Box, Button, FormControl, FormErrorMessage, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Switch, Textarea, useDisclosure, useToast } from "@chakra-ui/react"
 import { Controller, useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
-
+import axiosIntance from '../../services/axios'
 
 export const CRUDTodo = ({
   editable = false,
@@ -15,14 +15,40 @@ export const CRUDTodo = ({
   const {handleSubmit, register, control, formState:{errors, isSubmitting }} = useForm({
     defaultValues: {...defaultValues}
   })
+  const onSubmit = async (values) => {
+    try {
+      if (editable) {
+        await axiosIntance.put(`/todo/${todoId}`, values)
+      } else {
+        await axiosIntance.post(`/todo/create`, values)
+      }
+      toast({
+        title: editable? 'Todo Updated' : 'Todo Added',
+        status: 'success',
+        isClosable: true,
+        duration: 3000
+      })
+      onSuccess();
+      onClose()
+
+    } catch (error) {
+      console.error(error)
+      toast({
+        title: 'Something went wrong, please try again!',
+        status: 'error',
+        isClosable: true,
+        duration: 3000
+      })
+    }
+  }
   return (
     <Box>
-      <Button w='100%' colorScheme="green" onClick={onOpen} >
+      <Button w='100%' colorScheme="yellow" onClick={onOpen} >
         {editable? 'Update' : 'Add' }
       </Button>
-      <Modal closeOnOverlayClick={false} size={xl} onClose={onClose} isOpen={isOpen} isCentered >
+      <Modal closeOnOverlayClick={false} size='xl' onClose={onClose} isOpen={isOpen} isCentered >
         <ModalOverlay />
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)} > 
           <ModalContent>
             <ModalHeader>
               {editable? 'Update' : 'Add'}
