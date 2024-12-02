@@ -8,6 +8,7 @@ import { Authenticated} from './components/auths/Authenticated';
 import { Flex } from '@chakra-ui/react';
 import { TodoList } from "./components/Todo/TodoList";
 import { NavBar } from "./components/NavBar/NavBar";
+import { TodoDetail } from "./components/Todo/TodoDetail";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path='/register' element ={<PublicRoute> <Register /> </PublicRoute>} />
             <Route path='/' element={<NavBar/>} >
               <Route path='/' element ={<Authenticated> <TodoList/> </Authenticated>} />
+              <Route path='/:todoId' element ={<Authenticated> <TodoDetail/> </Authenticated>} />
             </Route>
             <Route path='*' element ={<Navigate to ='/' />} />
         </Routes>
