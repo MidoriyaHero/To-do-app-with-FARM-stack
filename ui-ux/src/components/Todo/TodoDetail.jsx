@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { useNavigate, useParams } from "react-router"
 import  axiosInstance  from '../../services/axios'
 import { Button, Center, Container, Spinner, Text } from "@chakra-ui/react"
+import { CRUDTodo } from "./CRUDTodo"
 
 export const TodoDetail = () => {
     const [todo, setTodo] = useState({})
@@ -50,6 +51,11 @@ export const TodoDetail = () => {
             <Text bg='orange.200' mt={2} p={2} rounded='lg' >
                 {todo.desciption}
             </Text>
+            <CRUDTodo 
+            my={3} 
+            editable={true} 
+            defaultValues={{title:todo.title, description: todo.description, status: todo.status}}
+            onSuccess={fetchTodo} />
         </Container>
         </>
     )
