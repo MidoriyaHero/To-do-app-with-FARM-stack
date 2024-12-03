@@ -26,7 +26,7 @@ async def get_todo_by_id(todo_id: UUID, current_user: User = Depends(get_current
 async def update(todo_id: UUID, data: TodoUpdate, current_user: User = Depends(get_current_user)):
     return await TodoService.update_todo(current_user, todo_id, data)
 
-@todo_router.delete('{todo_id}')
+@todo_router.delete('/{todo_id}')
 async def delete(todo_id: UUID, current_user: User = Depends(get_current_user)):
     await TodoService.delete_todo(current_user,todo_id)
     return {"Message":"Successfully deleted!"}

@@ -8,17 +8,17 @@ class OurBaseModel(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-class TodoCreate(OurBaseModel):
+class TodoCreate(BaseModel):
     title: str = Field(..., title = "Title")
     description: str = Field(..., title= "Description")
     status: Optional[bool] = False
 
-class TodoUpdate(OurBaseModel):
+class TodoUpdate(BaseModel):
     title: Optional[str] = Field(..., title = "Title")
     description: Optional[str] = Field(..., title= "Description")
     status: Optional[bool] = False
 
-class TodoOut(OurBaseModel):
+class TodoOut(BaseModel):
     todo_id: UUID
     status: bool
     title: str

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { useNavigate, useParams } from "react-router"
 import  axiosInstance  from '../../services/axios'
-import { Button, Center, Container, Spinner, Text } from "@chakra-ui/react"
+import { Button, Center, Container, Spinner, Text, useToast } from "@chakra-ui/react"
 import { CRUDTodo } from "./CRUDTodo"
 
 export const TodoDetail = () => {
@@ -10,7 +10,7 @@ export const TodoDetail = () => {
     const isMounted = useRef(false)
     const {todoId} = useParams()
     const navigate = useNavigate()
-
+    const toast = useToast()
     useEffect(() =>{
         if (isMounted.current) return;
         fetchTodo();
@@ -28,6 +28,28 @@ export const TodoDetail = () => {
             setLoading(false)
         })
     }
+    const delTodo = () => {
+      setLoading(true)
+      axiosInstance.delete(`/todo/${todoId}`)
+      .then(() =>{
+        toast({
+          title: 'Deleted!',
+          status: 'success',
+          isClosable: true,
+          duration: 3000
+        })
+        navigate('/')
+      })
+      .catch((error) => toast({
+        title: 'Something went wrong, please try again!',
+        status: 'error',
+        isClosable: true,
+        duration: 3000
+      }))
+      .finally(() => {
+        setLoading(false)
+      })
+    }
     if (loading) {
         return (
             <Container>
@@ -39,16 +61,16 @@ export const TodoDetail = () => {
     }
     return (
         <>
-      <Container mt={6}>
-        <Button
-          colorScheme="yellow"
-          onClick={() => navigate("/", { replace: true })}
-        >
-          Back
-        </Button>
+      <Container mt={6} >
+      <Button
+        colorScheme='yellow'
+        onClick={() => navigate("/", { replace: true })}
+      >
+        Back
+      </Button>
       </Container>
       <Container
-        bg='orange'
+        bg='orange.200'
         minHeight="7rem"
         my={3}
         p={3}
@@ -57,7 +79,7 @@ export const TodoDetail = () => {
         justifyContent="space-between"
       >
         <Text fontSize={22}>{todo.title}</Text>
-        <Text bg="gray.500" mt={2} p={2} rounded="lg">
+        <Text bg="orange.100" mt={2} p={2} rounded="lg">
           {todo.description}
         </Text>
         <CRUDTodo
@@ -70,6 +92,9 @@ export const TodoDetail = () => {
           }}
           onSuccess={fetchTodo}
         />
+        <Button isLoading={loading} colorScheme="red" width='100%' onClick={delTodo} >
+          Delete
+        </Button>
         </Container>
         </>
     )

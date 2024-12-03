@@ -16,7 +16,7 @@ export const TodoList = () => {
 
     const fetchTodo = () => {
         setLoading(true)
-        axiosInstance.get('/todo')
+        axiosInstance.get('/todo/')
         .then((response) =>{
             setTodos(response.data)
         }).catch ((error) => {
@@ -27,7 +27,7 @@ export const TodoList = () => {
     }
     return (
     <Container mt={9}  >
-        <CRUDTodo  />
+        <CRUDTodo onSuccess={fetchTodo} />
         {loading ? (
             <Center mt={6} >
                 <Spinner thickness='4px' speed='0.5s' emptyColor='green.100' color="green.100" />
@@ -39,6 +39,7 @@ export const TodoList = () => {
                 ))}
             </Box>
         )}
+        
     </Container>
     )
 }

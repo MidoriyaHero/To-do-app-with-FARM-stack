@@ -29,7 +29,7 @@ class Todo(Document):
             return self.todo_id == other.todo_id
         return False
     @before_event([Replace, Insert])
-    async def update(self):
+    async def updat_time(self):
         self.update_at = datetime.now()
 
     class Settings:
